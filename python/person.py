@@ -35,7 +35,7 @@ class Person:
         self.phone_number = phone_number
 
     def birth_year(self) -> int:
-        year = self.swedish_personal_number[0:4]
+        year = self.get_swedish_personal_number()[0:4]
         return int(year)
 
     def country_code(self) -> str:
