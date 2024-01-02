@@ -1,3 +1,14 @@
+class PersonalNumber:
+    def __init__(self, personal_number: str):
+        self.personal_number = personal_number
+    def __str__(self):
+        return self.personal_number
+    def get_birth_year(self):
+        # works for swedish PN
+        year = self.personal_number[0:4]
+        return int(year)
+        
+
 class Person:
     USER_ROLE_ADMIN = 0
     USER_ROLE_ENGINEER = 1
@@ -7,8 +18,7 @@ class Person:
     def __init__(self, role: int, swedish_personal_number: str, phone_number: str):
         self.role = role
         self.set_role(role)
-        self.swedish_personal_number = swedish_personal_number
-        self.set_swedish_personal_number(swedish_personal_number)
+        self.swedish_personal_number = self.get_swedish_personal_number(swedish_personal_number)
         self.phone_number = phone_number
 
     def get_role(self) -> int:
@@ -19,14 +29,14 @@ class Person:
             raise ValueError("illegal role " + role)
         self.role = role
 
-    def get_swedish_personal_number(self) -> str:
-        return self.swedish_personal_number
+    def get_swedish_personal_number_str(self) -> str:
+        return str(self.swedish_personal_number)
 
-    def set_swedish_personal_number(self, swedish_personal_number):
+    def get_swedish_personal_number(self, swedish_personal_number):
         swedish_personal_number = swedish_personal_number.replace("-", "")
         if swedish_personal_number.__len__() != 12:
             raise ValueError("invalid personal number " + swedish_personal_number)
-        self.swedish_personal_number = swedish_personal_number
+        return PersonalNumber(swedish_personal_number)
 
     def get_phone_number(self) -> str:
         return self.phone_number
@@ -35,8 +45,7 @@ class Person:
         self.phone_number = phone_number
 
     def birth_year(self) -> int:
-        year = self.get_swedish_personal_number()[0:4]
-        return int(year)
+        return self.swedish_personal_number.get_birth_year()
 
     def country_code(self) -> str:
         code = ""
